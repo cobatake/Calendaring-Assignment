@@ -1,3 +1,14 @@
 
-String timezone = "tzidparam  = "TZID" "=" [tzidprefix] " + parameter + " tzidprefix = "/""
+//   Time Zone Identifier Parameter Name:  TZID
+// Example of setting DTSTART and DTEND. These parameters will have to be given by the user 
+//In this case its start time 8:45pm HST on May 8 2015, end 10:00pm HST on May 8, 2015
+
+DTSTART;TZID=Pacific/Honolulu:20150308T164500
+DTEND;TZID=Pacific/Honolulu:20150308T180000
+
+//Probably be something like, get TZID Format (Zone/City), get date (MM/DD/YYYY) get time (HH:MM:SS), 
+
+
+
+
 
