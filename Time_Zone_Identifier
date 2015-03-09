@@ -1,4 +1,73 @@
+//Just taking from Chanel's code for now. Still under construction
 
+import java.util.Scanner;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class CalendarDriver {
+
+	/**
+	 * Driver for the calendar application
+	 * @param args
+	 */
+	public static void main(String[] args) throws IOException {
+		Scanner input = new Scanner(System.in);
+		Calendar event = new Calendar();
+		
+    String timezone;
+    String date;
+    String time;
+    
+	  System.out.print("Enter the Timezone of the Event (Reigon/City) format: ");
+	  timezone = intput.nextLine();
+	  
+	  System.out.print("Enter the start time of the Event (HHMMSS) format: ");
+	  time = intput.nextLine();
+    System.out.print("Enter the start date of the event (YYYYMMDD) format: ");
+    date = input.nextLine();
+		setStart(date,time);
+		
+		System.out.print("Enter the end time of the Event (HHMMSS) format: ");
+	  time = intput.nextLine();
+    System.out.print("Enter the end date of the event (YYYYMMDD) format: ");
+    date = input.nextLine();
+    setEnd(date,time);
+    
+		saveFile(event);
+	}
+
+	/**
+	 * Set event Timezone
+	 * @param timezone
+	 */
+	 public static void setTimezone(String timezone) {
+
+  timezone=this.timezone;
+  event.setTimezone(timezone);
+		
+		System.out.print("Enter a summary for the event: ");
+		finput = input.nextLine().trim();
+		event.setSummary(finput);
+	}
+	
+	/**
+	 * Saves .ics file
+	 * @param event - calendar event object
+	 * @throws IOException
+	 */
+	public static void saveFile(Calendar event) throws IOException {
+
+		FileWriter calendarfile = new FileWriter("calendar.ics");
+		calendarfile.write("BEGIN:VCALENDAR\n");
+		calendarfile.write(event.getVersion() + "\nBEGIN:VEVENT\n");
+		calendarfile.write(event.getLocation() + "\n");
+		calendarfile.write(event.getSummary() + "\n");
+		calendarfile.write("END:VEVENT\nBEGIN:VCALENDAR\n");
+		calendarfile.close();
+		
+		System.out.print("\nThe .ics file for your event has been created.");
+	}
+}
 //   Time Zone Identifier Parameter Name:  TZID
 // Example of setting DTSTART and DTEND. These parameters will have to be given by the user 
 //In this case its start time 8:45pm HST on May 8 2015, end 10:00pm HST on May 8, 2015
