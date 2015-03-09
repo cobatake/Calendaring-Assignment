@@ -1,4 +1,4 @@
-//Just taking from Chanel's code for now. Still under construction
+//Just taking from Chanel's code for now. Modifying.  Still under construction
 
 import java.util.Scanner;
 import java.io.FileWriter;
@@ -15,21 +15,23 @@ public class CalendarDriver {
 		Calendar event = new Calendar();
 		
     String timezone;
-    String date;
-    String time;
+    int date;
+    int time;
+    String start;
+    String end;
     
 	  System.out.print("Enter the Timezone of the Event (Reigon/City) format: ");
 	  timezone = intput.nextLine();
 	  
-	  System.out.print("Enter the start time of the Event (HHMMSS) format: ");
-	  time = intput.nextLine();
-    System.out.print("Enter the start date of the event (YYYYMMDD) format: ");
-    date = input.nextLine();
+	System.out.print("Enter the start time of the Event (HHMMSS) format: ");
+	time = intput.nextLine();
+	System.out.print("Enter the start date of the event (YYYYMMDD) format: ");
+	date = input.nextLine();
 		setStart(date,time);
 		
 		System.out.print("Enter the end time of the Event (HHMMSS) format: ");
-	  time = intput.nextLine();
-    System.out.print("Enter the end date of the event (YYYYMMDD) format: ");
+	  	time = intput.nextLine();
+	  System.out.print("Enter the end date of the event (YYYYMMDD) format: ");
     date = input.nextLine();
     setEnd(date,time);
     
@@ -40,14 +42,25 @@ public class CalendarDriver {
 	 * Set event Timezone
 	 * @param timezone
 	 */
-	 public static void setTimezone(String timezone) {
-
+	 public void setTimezone(String timezone) {
   timezone=this.timezone;
-  event.setTimezone(timezone);
-		
-		System.out.print("Enter a summary for the event: ");
-		finput = input.nextLine().trim();
-		event.setSummary(finput);
+	}
+	/**
+	 * Set event Start time
+	 * @param time
+	 */
+	 public void setStart(int time, int date) {
+  time=this.time;
+  date=this.date;
+	}
+	
+	/**
+	 * Set event End time
+	 * @param time
+	 */
+	public void setEnd(int time, int date) {
+  time=this.time;
+  date=this.date;
 	}
 	
 	/**
