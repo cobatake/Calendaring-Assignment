@@ -1,1 +1,3 @@
-!
+
+String timezone = "tzidparam  = "TZID" "=" [tzidprefix] " + parameter + " tzidprefix = "/""
+
