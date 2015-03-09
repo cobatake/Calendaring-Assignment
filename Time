@@ -1,18 +1,16 @@
 //Just taking from Chanel's code for now. Modifying.  Still under construction
 
+/**
+* Takes care of 
+*
+*
+**/
+
 import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class CalendarDriver {
-
-	/**
-	 * Driver for the calendar application
-	 * @param args
-	 */
-	public static void main(String[] args) throws IOException {
-		Scanner input = new Scanner(System.in);
-		Calendar event = new Calendar();
+public class Time {
 		
     String timezone;
     int date;
@@ -20,20 +18,30 @@ public class CalendarDriver {
     String start;
     String end;
     
+	/**
+	 * Driver 
+	 * @param args
+	 */
+	public static void main(String[] args) throws IOException {
+		Scanner input = new Scanner(System.in);
+		Calendar event = new Calendar();
+
 	  System.out.print("Enter the Timezone of the Event (Reigon/City) format: ");
 	  timezone = intput.nextLine();
 	  
 	System.out.print("Enter the start time of the Event (HHMMSS) format: ");
-	time = intput.nextLine();
+		time = intput.nextLine();
 	System.out.print("Enter the start date of the event (YYYYMMDD) format: ");
-	date = input.nextLine();
-		setStart(date,time);
-		
-		System.out.print("Enter the end time of the Event (HHMMSS) format: ");
+		date = input.nextLine();
+		setTime(date,time);
+		start = getTime();
+	
+	System.out.print("Enter the end time of the Event (HHMMSS) military format: ");
 	  	time = intput.nextLine();
 	  System.out.print("Enter the end date of the event (YYYYMMDD) format: ");
-    date = input.nextLine();
-    setEnd(date,time);
+	  	date = input.nextLine();
+    		setTime(date,time);
+		end = getTime();
     
 		saveFile(event);
 	}
@@ -43,24 +51,23 @@ public class CalendarDriver {
 	 * @param timezone
 	 */
 	 public void setTimezone(String timezone) {
-  timezone=this.timezone;
-	}
-	/**
-	 * Set event Start time
-	 * @param time
-	 */
-	 public void setStart(int time, int date) {
-  time=this.time;
-  date=this.date;
+		  timezone=this.timezone;
 	}
 	
 	/**
-	 * Set event End time
+	 * Sets time
 	 * @param time
 	 */
-	public void setEnd(int time, int date) {
-  time=this.time;
-  date=this.date;
+	public void setTime(int time, int date) {
+		  time=this.time;
+		  date=this.date;
+	}
+	
+	/**
+	 * Returns time in appropriate format for .ics
+   	 */
+	public String getTime(){
+	return date+"T"+time;
 	}
 	
 	/**
