@@ -1,0 +1,11 @@
+//Start time for event is May 8, 2015 at 6pm. End time is at 10pm.
+ DTSTART;TZID=Pacific/Honolulu:20150508T180000
+ DTEND;TZID=Pacific/Honolulu:19980119T220000
+
+ LOCATION: Hamilton Library
+
+ PRIORITY:1
+
+ CLASS:PUBLIC
+ 
+ COMMENT: Studying for finals
