@@ -1,4 +1,5 @@
 //Just taking from Chanel's code for now. Modifying.  Still under construction
+//Later on, the UI will be cleaner and easier for users to use. For now, this is gonna be the barebones
 
 /**
 * Takes care of 
@@ -24,11 +25,10 @@ public class Time {
 	 */
 	public static void main(String[] args) throws IOException {
 		Scanner input = new Scanner(System.in);
-		Calendar event = new Calendar();
+	//	Calendar event = new Calendar();
 
-	  System.out.print("Enter the Timezone of the Event (Reigon/City) format: ");
-	  timezone = intput.nextLine();
-	  
+	System.out.print("Enter the Timezone of the Event (Reigon/City) format: ");
+		timezone = intput.nextLine();
 	System.out.print("Enter the start time of the Event (HHMMSS) format: ");
 		time = intput.nextLine();
 	System.out.print("Enter the start date of the event (YYYYMMDD) format: ");
@@ -70,6 +70,8 @@ public class Time {
 	return date+"T"+time;
 	}
 	
+	
+	// ------------------- Needs to change from here down ---------------------------------
 	/**
 	 * Saves .ics file
 	 * @param event - calendar event object
@@ -88,16 +90,3 @@ public class Time {
 		System.out.print("\nThe .ics file for your event has been created.");
 	}
 }
-//   Time Zone Identifier Parameter Name:  TZID
-// Example of setting DTSTART and DTEND. These parameters will have to be given by the user 
-//In this case its start time 8:45pm HST on May 8 2015, end 10:00pm HST on May 8, 2015
-
-DTSTART;TZID=Pacific/Honolulu:20150308T164500
-DTEND;TZID=Pacific/Honolulu:20150308T180000
-
-//Probably be something like, get TZID Format (Zone/City), get date (MM/DD/YYYY) get time (HH:MM:SS), 
-
-
-
-
-
