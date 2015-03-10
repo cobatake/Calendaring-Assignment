@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
@@ -7,6 +12,8 @@ import java.util.Scanner;
  * @author chanelsantiago
  */
 public class UserEvent {
+    static String[] timezone1 = {"Africa", "America", "Antarctic", "Atlantic", "Europe", "Indian", "Pacific"};
+    static String[] africa = {"Abidjan", "Accra", "Addis_Ababa", "Algiers", "Asmara"};
     public static void main (String args[]) throws IOException {
         Scanner scan = new Scanner(System.in);
         ICalendarEvent event = new ICalendarEvent();
@@ -22,6 +29,8 @@ public class UserEvent {
         System.out.print("End Time of Event(hhmmss): ");
         String endTime = scan.nextLine();
         event.setDTEnd(month, endTime);
+        System.out.print("Timezone of Event: ");
+        event.setTimeZone(scan.nextLine());
         System.out.print("Priority of Event: ");
         event.setPriority(scan.nextLine());
         System.out.print("Visibility of Event(public, private, confidential): ");
@@ -35,8 +44,8 @@ public class UserEvent {
         icsFile.write("\nLOCATION:" + event.getLocation());
         icsFile.write("\nPRIORITY:" + event.getPriority());
         icsFile.write("\nSUMMARY:" + event.getSummary());
-        icsFile.write("\nDTSTART:" + event.getDTStart());
-        icsFile.write("\nDTEND:" + event.getDTEnd());
+        icsFile.write("\nDTSTART;TZID=" + event.getTimeZone() + ":" + event.getDTStart());
+        icsFile.write("\nDTEND;TZID=" + event.getTimeZone() + ":" + event.getDTEnd());
         icsFile.write("\nEND:VEVENT");
         icsFile.write("\nEND:VCALENDAR");
         

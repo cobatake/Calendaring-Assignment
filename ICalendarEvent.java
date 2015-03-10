@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 import java.util.Scanner;
 
 /**
@@ -11,7 +16,9 @@ public class ICalendarEvent {
     String location = "";
     String DTStart = "";
     String DTEnd = "";
+    String timeZone = "";
     int priority = 9;
+    
     public ICalendarEvent() {
         version = "2.0";
     }
@@ -77,5 +84,11 @@ public class ICalendarEvent {
     }
     public String getDTEnd() {
         return DTEnd;
+    }
+    public void setTimeZone(String t) {
+        timeZone = t;
+    }
+    public String getTimeZone() {
+        return timeZone;
     }
 }
