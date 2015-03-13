@@ -70,23 +70,4 @@ public class Time {
 	return date+"T"+time;
 	}
 	
-	
-	// ------------------- Needs to change from here down ---------------------------------
-	/**
-	 * Saves .ics file
-	 * @param event - calendar event object
-	 * @throws IOException
-	 */
-	public static void saveFile(Calendar event) throws IOException {
-
-		FileWriter calendarfile = new FileWriter("calendar.ics");
-		calendarfile.write("BEGIN:VCALENDAR\n");
-		calendarfile.write(event.getVersion() + "\nBEGIN:VEVENT\n");
-		calendarfile.write(event.getLocation() + "\n");
-		calendarfile.write(event.getSummary() + "\n");
-		calendarfile.write("END:VEVENT\nBEGIN:VCALENDAR\n");
-		calendarfile.close();
-		
-		System.out.print("\nThe .ics file for your event has been created.");
-	}
 }
