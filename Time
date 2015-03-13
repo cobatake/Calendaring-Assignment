@@ -12,62 +12,95 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Time {
-		
+
+  /**
+   * Driver 
+   * @param args
+   */
+  public static void main(String[] args) throws IOException {
+    Scanner input = new Scanner(System.in);
+  //  Calendar event = new Calendar();
+    
     String timezone;
-    int date;
-    int time;
+    String date;
+    String time;
     String start;
     String end;
     
-	/**
-	 * Driver 
-	 * @param args
-	 */
-	public static void main(String[] args) throws IOException {
-		Scanner input = new Scanner(System.in);
-	//	Calendar event = new Calendar();
-
-	System.out.print("Enter the Timezone of the Event (Reigon/City) format: ");
-		timezone = intput.nextLine();
-	System.out.print("Enter the start time of the Event (HHMMSS) format: ");
-		time = intput.nextLine();
-	System.out.print("Enter the start date of the event (YYYYMMDD) format: ");
-		date = input.nextLine();
-		setTime(date,time);
-		start = getTime();
-	
-	System.out.print("Enter the end time of the Event (HHMMSS) military format: ");
-	  	time = intput.nextLine();
-	  System.out.print("Enter the end date of the event (YYYYMMDD) format: ");
-	  	date = input.nextLine();
-    		setTime(date,time);
-		end = getTime();
+  System.out.print("Enter the Timezone of the Event (Reigon/City) format: ");
+    Scanner intput;
+    timezone = intput.nextLine();
+  System.out.print("Enter the start time of the Event (HHMMSS) format: ");
+    time = intput.nextLine();
+  System.out.print("Enter the start date of the event (YYYYMMDD) format: ");
+    date = input.nextLine();
+    setStartTime(date,time);
+    start = getStartTime();
+  
+  System.out.print("Enter the end time of the Event (HHMMSS) military format: ");
+      time = intput.nextLine();
+    System.out.print("Enter the end date of the event (YYYYMMDD) format: ");
+      date = input.nextLine();
+        setEndTime(date,time);
+    end = getEndTime();
     
-		saveFile(event);
-	}
+    getTime();
+    saveFile(event);
+  }
 
-	/**
-	 * Set event Timezone
-	 * @param timezone
-	 */
-	 public void setTimezone(String timezone) {
-		  timezone=this.timezone;
-	}
-	
-	/**
-	 * Sets time
-	 * @param time
-	 */
-	public void setTime(int time, int date) {
-		  time=this.time;
-		  date=this.date;
-	}
-	
-	/**
-	 * Returns time in appropriate format for .ics
-   	 */
-	public String getTime(){
-	return date+"T"+time;
-	}
-	
+  /**
+   * Set event Timezone
+   * @param timezone
+   */
+   public void setTimezone(String timezone) {
+      timezone=this.timezone;
+  }
+  public String getTimezone(){
+    return timezone;
+  }
+  
+  
+  /**
+   * Sets time
+   * @param time
+   */
+  public void setStartTime(String time, String date) {
+      time=this.time;
+      date=this.date;
+  }
+  
+  /**
+   * Gets time
+   * @param time
+   */
+  public String getStartTime() {
+      return date+"T"+time;
+  }
+  
+  /**
+   * Sets time
+   * @param time
+   */
+  public void setEndTime(String time, String date) {
+      time=this.time;
+      date=this.date;
+  }
+  
+  /**
+   * Gets time
+   * @param time
+   */
+  public String getEndTime() {
+      return date+"T"+time;
+  }
+  
+  
+  /**
+   * Returns time in appropriate format for .ics
+   * TZID + Time
+     */
+  public void getTime(){
+  System.out.println("DTSTART;TZID="+getTimezone()+getStartTime());
+  System.out.println("DTEND;TZID=" + getTimezone()+getEndTime());
+  }
 }
