@@ -165,7 +165,7 @@ public class ICalendarEvent {
                 freeEnd = times.get(i);
                 startOfDay = times.get(i+1);
             }
-	    if (freeStart != freeEnd) {
+	    if (!freeStart.equals(freeEnd)) {
             	freetimes.add(freeStart);
             	freetimes.add(freeEnd);
 	    }
