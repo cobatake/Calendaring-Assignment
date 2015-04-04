@@ -34,11 +34,43 @@ public class FreeTimeEvent {
 	}
 
 	/**
+	 *  Get blocks of time for scheduled events
+	 * @return array of blocks of time
+	 */
+	public ArrayList<timeBlock> getBusyTimes(){
+		return busyTimes;
+	}
+	
+	/**
+	 *  Get blocks of free time for scheduled events
+	 * @return array of blocks of free time
+	 */
+	public ArrayList<timeBlock> getFreeTimes(){
+		return freeTimes;
+	}
+
+	/**
 	 * Get free time events
 	 * @return array of calendar events for all free times
 	 */
 	public ArrayList<ICalendarEvent> getFreeTime(){
 		return freeTimeEvents;
+	}
+
+	/**
+	 *  Get date for events
+	 * @return array of blocks of time
+	 */
+	public String getDate(){
+		return Date;
+	}
+	
+	/**
+	 *  Get time zone for events
+	 * @return array of blocks of free time
+	 */
+	public String getTimeZone(){
+		return TimeZone;
 	}
 
 	/**
