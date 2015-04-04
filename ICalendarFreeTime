@@ -1,0 +1,60 @@
+import static org.junit.Assert.*;
+import java.util.ArrayList;
+import java.util.Scanner;
+import org.junit.Test;
+import java.io.*;
+
+/**
+ * Test.
+ * @author Cynthia
+ *
+ */
+public class ICalendarFreeTime {
+
+public static void main(String args[]) throws Exception { 
+  //Makes an arraylist and stores the DSTART/DTEND/TZID
+  ArrayList<String> list = new ArrayList<String>();
+  ArrayList<String> timezones = new ArrayList<String>();
+
+  String text = "";
+  
+  Scanner scan = new Scanner(System.in);
+  System.out.print("Enter name of file (q to quit): ");
+  
+  //Takes input until told to quit
+  while(scan.nextLine() != "q"){
+  
+    //Reads files in
+    FileReader fr = new FileReader(scan.nextLine());
+    
+    
+    //Reads in lines from the new file. Might as well store information from each file as we scan them in.
+    BufferedReader br = new BufferedReader(fr);
+    //Read lines of code from the file until there are none left
+    while ((text = br.readLine()) != null) {
+    
+    //If the line has the TZID, shove it into the timezones arraylist. After this, take a substring that will have (most) of the timezone id
+    //Store the first ever scanned TZID, and compare it with each one after during the loop.
+    //If at some point it does not match, kick out of the loop and end program.
+      if (text.contains("TZID")) {
+        timezones.add(text);
+      }
+      
+      
+      
+    }
+    System.out.print("Enter name of file (q to quit): ");
+  }
+  //Check to see if the timezones are the same
+  if()
+  
+  
+}
+
+//No clue what to do with this jUnit Test thing still so...
+  @Test
+  public void test() {
+    fail("Not yet implemented");
+  }
+
+}
