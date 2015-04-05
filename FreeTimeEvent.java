@@ -7,8 +7,8 @@ import java.io.IOException;
 public class FreeTimeEvent {
 
 	private ArrayList<String> fileNames;
-	private ArrayList<timeBlock> busyTimes;
-	private ArrayList<timeBlock> freeTimes;
+	private ArrayList<TimeBlock> busyTimes;
+	private ArrayList<TimeBlock> freeTimes;
 	private ArrayList<ICalendarEvent> freeTimeEvents;
 	private String Date;
 	private String TimeZone;
@@ -16,10 +16,10 @@ public class FreeTimeEvent {
 	/**
 	 *  Constructor for FreeTimeEvent
 	 */
-	FreeTimeEvent() {
+	public FreeTimeEvent() {
 		this.fileNames = new ArrayList<String>();
-		this.busyTimes = new ArrayList<timeBlock>();
-		this.freeTimes = new ArrayList<timeBlock>();
+		this.busyTimes = new ArrayList<TimeBlock>();
+		this.freeTimes = new ArrayList<TimeBlock>();
 		this.freeTimeEvents = new ArrayList<ICalendarEvent>();
 		this.Date = null;
 		this.TimeZone = null;
@@ -37,7 +37,7 @@ public class FreeTimeEvent {
 	 *  Get blocks of time for scheduled events
 	 * @return array of blocks of time
 	 */
-	public ArrayList<timeBlock> getBusyTimes(){
+	public ArrayList<TimeBlock> getBusyTimes(){
 		return busyTimes;
 	}
 	
@@ -45,10 +45,11 @@ public class FreeTimeEvent {
 	 *  Get blocks of free time for scheduled events
 	 * @return array of blocks of free time
 	 */
-	public ArrayList<timeBlock> getFreeTimes(){
+	public ArrayList<TimeBlock> getFreeTimes(){
 		return freeTimes;
 	}
-
+	
+	
 	/**
 	 * Get free time events
 	 * @return array of calendar events for all free times
@@ -72,7 +73,7 @@ public class FreeTimeEvent {
 	public String getTimeZone(){
 		return TimeZone;
 	}
-
+	
 	/**
 	 * Get event files
 	 */
@@ -114,7 +115,7 @@ public class FreeTimeEvent {
 		for(int i=0; i<fileNames.size(); i++) {
 			File file = new File(fileNames.get(i));
 			Scanner input = new Scanner(file);
-			busyTimes.add(new timeBlock());
+			busyTimes.add(new TimeBlock());
 
 			while(input.hasNext()) {
 				String nextLine = input.nextLine();
@@ -137,14 +138,14 @@ public class FreeTimeEvent {
 			input.close();
 		}
 
-		timeBlock checkEvent;
-		Date = busyTimes.get(0).startDate;
-		TimeZone = busyTimes.get(0).timezone;
+		TimeBlock checkEvent;
+		Date = busyTimes.get(0).getStartDate();
+		TimeZone = busyTimes.get(0).getTimezone();
 
 		for(int i=0; i<busyTimes.size(); i++) {
 			checkEvent = busyTimes.get(i);
 
-			if(!checkEvent.startDate.equals(Date) || !checkEvent.endDate.equals(Date) || !checkEvent.timezone.equals(TimeZone)) {
+			if(!checkEvent.getStartDate().equals(Date) || !checkEvent.getEndDate().equals(Date) || !checkEvent.getTimezone().equals(TimeZone)) {
 				throw new IOException("The event is not on the same day or time zones did not match.");
 			}
 
@@ -158,25 +159,25 @@ public class FreeTimeEvent {
 	public void findFreeTimes() {
 		int j = 0;	
 
-		if(Integer.parseInt(busyTimes.get(0).startTime) != Integer.parseInt("000000")) {
-			freeTimes.add(new timeBlock());
+		if(Integer.parseInt(busyTimes.get(0).getStartTime()) != Integer.parseInt("000000")) {
+			freeTimes.add(new TimeBlock());
 			freeTimes.get(j).setdtStart(Date+"T000000");
-			freeTimes.get(j).setdtEnd(Date+"T"+busyTimes.get(0).startTime);
+			freeTimes.get(j).setdtEnd(Date+"T"+busyTimes.get(0).getStartTime());
 			j++;
 		}
 
 		for(int i=1; i<busyTimes.size(); i++) {
-			if(Integer.parseInt(busyTimes.get(i).startTime) > Integer.parseInt(busyTimes.get(i-1).endTime)) {
-				freeTimes.add(new timeBlock());
-				freeTimes.get(j).setdtStart(Date+"T"+busyTimes.get(i-1).endTime);
-				freeTimes.get(j).setdtEnd(Date+"T"+busyTimes.get(i).startTime);
+			if(Integer.parseInt(busyTimes.get(i).getStartTime()) > Integer.parseInt(busyTimes.get(i-1).getEndTime())) {
+				freeTimes.add(new TimeBlock());
+				freeTimes.get(j).setdtStart(Date+"T"+busyTimes.get(i-1).getEndTime());
+				freeTimes.get(j).setdtEnd(Date+"T"+busyTimes.get(i).getStartTime());
 				j++;
 			}
 		}
 
-		if(Integer.parseInt(busyTimes.get(busyTimes.size()-1).endTime) != Integer.parseInt("235959")) {
-			freeTimes.add(new timeBlock());
-			freeTimes.get(j).setdtStart(Date+"T"+busyTimes.get(busyTimes.size()-1).endTime);
+		if(Integer.parseInt(busyTimes.get(busyTimes.size()-1).getEndTime()) != Integer.parseInt("235959")) {
+			freeTimes.add(new TimeBlock());
+			freeTimes.get(j).setdtStart(Date+"T"+busyTimes.get(busyTimes.size()-1).getEndTime());
 			freeTimes.get(j).setdtEnd(Date+"T235959");
 		}
 	}
@@ -190,68 +191,14 @@ public class FreeTimeEvent {
 
 			freeTimeEvent.setSummary("FreeTime"+i);
 			freeTimeEvent.setLocation("None");
-			freeTimeEvent.setDTStart(Date, freeTimes.get(i).startTime);
-			freeTimeEvent.setDTEnd(Date, freeTimes.get(i).endTime);
+			freeTimeEvent.setDTStart(Date, freeTimes.get(i).getStartTime());
+			freeTimeEvent.setDTEnd(Date, freeTimes.get(i).getEndTime());
 			freeTimeEvent.setTimeZone(TimeZone);
 			freeTimeEvent.setPriority("high");
-			freeTimeEvent.setClassification("private");
+			freeTimeEvent.setClassification("public");
 
 			freeTimeEvents.add(freeTimeEvent);
 		}
 	}
 
-	/**
-	 * Class for blocks of time
-	 * - Contains the start and end date and time, and time zone
-	 */
-	public class timeBlock implements Comparable<timeBlock> {
-		private String startDate;
-		private String endDate;
-		private String startTime;
-		private String endTime;
-		private String timezone;
-
-		/**
-		 * Constructor for timeBlock
-		 */
-		private timeBlock() {
-			this.startDate = null;
-			this.endDate = null;
-			this.startTime = null;
-			this.endTime = null;
-			this.timezone = null;
-		}
-
-		/**
-		 * Set start date and time
-		 * @param DTStart - string containing start date and time
-		 */
-		private void setdtStart(String DTStart) {
-			this.startDate = DTStart.substring(0, 8);
-			this.startTime = DTStart.substring(9, DTStart.length());
-		}
-
-		/**
-		 * Set end date and time
-		 * @param DTEnd - string containing end date and time
-		 */
-		private void setdtEnd(String DTEnd) {
-			this.endDate = DTEnd.substring(0, 8);
-			this.endTime = DTEnd.substring(9, DTEnd.length());
-		}
-
-		/**
-		 * Set time zone
-		 * @param TZID - string containing time zone
-		 */
-		private void setTimezone(String TZID) {
-			this.timezone = TZID;
-		}
-
-		@Override
-		public int compareTo(timeBlock block) {
-			return Integer.parseInt(this.startTime) - Integer.parseInt(block.startTime);
-		}
-
-	}
 }
