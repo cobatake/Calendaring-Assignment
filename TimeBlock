@@ -1,0 +1,124 @@
+/**
+* Essentially just edited the original Time BLock 
+*
+**/
+
+public class TimeBlock implements Comparable<TimeBlock> {
+  private String startDate;
+  private String endDate;
+  private String startTime;
+  private String endTime;
+  private String timezone;
+  private int priority;
+  private String summary;
+
+
+
+  /**
+   * Constructor for timeBlock
+   */
+  TimeBlock() {
+    this.startDate = null;
+    this.endDate = null;
+    this.startTime = null;
+    this.endTime = null;
+    this.timezone = null;
+    this.priority = 0;
+  }
+
+
+  public String getStartDate() {
+    return startDate;
+  }
+
+
+  public String getEndDate() {
+    return endDate;
+  }
+
+
+  public String getStartTime() {
+    return startTime;
+  }
+
+
+  public String getEndTime() {
+    return endTime;
+  }
+
+
+  public String getTimezone() {
+    return timezone;
+  }
+
+
+  public int priority() {
+    return priority;
+  }
+
+
+  /**
+   * Set start date and time
+   * 
+   * @param DTStart - string containing start date and time
+   */
+  public void setdtStart(String DTStart) {
+    this.startDate = DTStart.substring(0, 8);
+    this.startTime = DTStart.substring(9, DTStart.length());
+  }
+
+
+  /**
+   * Set end date and time
+   * 
+   * @param DTEnd - string containing end date and time
+   */
+  public void setdtEnd(String DTEnd) {
+    this.endDate = DTEnd.substring(0, 8);
+    this.endTime = DTEnd.substring(9, DTEnd.length());
+  }
+
+
+  /**
+   * Set time zone
+   * 
+   * @param TZID - string containing time zone
+   */
+  public void setTimezone(String TZID) {
+    this.timezone = TZID;
+  }
+
+
+  @Override
+  public int compareTo(TimeBlock block) {
+    return Integer.parseInt(this.startTime) - Integer.parseInt(block.startTime);
+  }
+
+
+  public void setPriority(String p) {
+    try {
+      if (Integer.parseInt(p) < 10 && Integer.parseInt(p) > 0) {
+        priority = Integer.parseInt(p);
+      }
+    }
+    catch (NumberFormatException e) {
+      if (p.equals("high")) {
+        priority = 1;
+      }
+      else if (p.equals("medium")) {
+        priority = 5;
+      }
+      else {
+        priority = 9;
+      }
+    }
+  }
+
+
+
+  public void setSummary(String s) {
+    summary = s;
+    
+  }
+
+}
