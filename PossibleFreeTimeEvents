@@ -1,0 +1,282 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.io.IOException;
+
+public class PossibleFreeTimeEvents {
+
+  private ArrayList<String> fileNames;
+  private ArrayList<TimeBlock> busyTimes;
+  private ArrayList<TimeBlock> freeTimes;
+  private ArrayList<TimeBlock> possibleFreeTime;
+  private ArrayList<String> possibleFreeTimeFiles;
+  private ArrayList<ICalendarEvent> freeTimeEvents;
+  private ArrayList<ICalendarEvent> possibleFreeTimeEvents;
+  private String Date;
+  private String TimeZone;
+  private int priority;
+
+
+  /**
+   * Constructor for FreeTimeEvent
+   * 
+   * @return
+   */
+  public void PossibleFreeTimeEvent() {
+    this.fileNames = new ArrayList<String>();
+    this.busyTimes = new ArrayList<TimeBlock>();
+    this.possibleFreeTime = new ArrayList<TimeBlock>();
+    this.possibleFreeTimeEvents = new ArrayList<ICalendarEvent>();
+    this.Date = null;
+    this.priority = 0;
+  }
+
+
+  /**
+   * Get file names for scheduled events
+   * 
+   * @return array of file names
+   */
+  public ArrayList<String> getFileNames() {
+    return fileNames;
+  }
+
+
+  /**
+   * Get blocks of time for scheduled events
+   * 
+   * @return array of blocks of time
+   */
+  public ArrayList<TimeBlock> getBusyTimes() {
+    return busyTimes;
+  }
+
+
+  /**
+   * Get blocks of free time for scheduled events
+   * 
+   * @return array of blocks of free time
+   */
+  public ArrayList<TimeBlock> getFreeTimes() {
+    return freeTimes;
+  }
+
+
+  /**
+   * Get free time events
+   * 
+   * @return array of calendar events for all free times
+   */
+  public ArrayList<ICalendarEvent> getFreeTime() {
+    return freeTimeEvents;
+  }
+
+
+  /**
+   * Get date for events
+   * 
+   * @return array of blocks of time
+   */
+  public String getDate() {
+    return Date;
+  }
+
+
+  /**
+   * Get time zone for events
+   * 
+   * @return array of blocks of free time
+   */
+  public String getTimeZone() {
+    return TimeZone;
+  }
+
+
+  /**
+   * Gets priority
+   * 
+   * @return
+   */
+  public int getPriority() {
+    return priority;
+
+  }
+
+
+  /**
+   * Get event files
+   */
+  public void getFileArray() {
+    Scanner input = new Scanner(System.in);
+
+    System.out.print("Enter .txt file name including the extension (enter d when done): ");
+    String file = input.nextLine().trim();
+
+    while ((!file.equals("d")) && (!file.equals("D"))) {
+
+      File eventFile = new File(file);
+      String extension = file.substring(file.lastIndexOf("."), file.length());
+
+      if (!extension.equals(".txt")) {
+        System.out.print("Not a valid file\n");
+      }
+
+  /*    else if (!eventFile.exists() || eventFile.isDirectory()) {
+        System.out.print("File does not exist\n");
+      }
+*/
+      else {
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+          String line;
+
+          while ((line = br.readLine()) != null) {
+
+            // Adds the line in the text file (of .ics files) to the fileNames.
+            fileNames.add(line);
+            System.out.print(line + " was added successfully\n");
+
+          }
+        }
+
+        catch (IOException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+      }
+
+      System.out.print("Enter .txt file name including the extension (enter d when done): ");
+      file = input.nextLine().trim();
+    }
+  }
+
+
+  /**
+   * Find busy times during the day
+   * 
+   * @throws IOException - if dates not the same or time zones not matching
+   */
+  public void findBusyTimes() throws IOException {
+
+    for (int i = 0; i < fileNames.size(); i++) {
+      File file = new File(fileNames.get(i));
+      Scanner input = new Scanner(file);
+      busyTimes.add(new TimeBlock());
+
+      while (input.hasNext()) {
+        String nextLine = input.nextLine();
+        String delimiter = "[:]+";
+        String[] tokens = nextLine.split(delimiter);
+
+        if (tokens[0].equals("DTSTART")) {
+          busyTimes.get(i).setdtStart(tokens[1]);
+        }
+
+        if (tokens[0].equals("DTEND")) {
+          busyTimes.get(i).setdtEnd(tokens[1]);
+        }
+
+        if (tokens[0].equals("TZID")) {
+          busyTimes.get(i).setTimezone(tokens[1]);
+        }
+        if (tokens[0].equals("PRIORITY")) {
+          busyTimes.get(i).setPriority(tokens[1]);
+
+          // If the priority is low, add this file name to the list of possible free times.
+          if (tokens[1].equals(9) || tokens[1].equals("low")) {
+            possibleFreeTimeFiles.add(fileNames.get(i));
+          }
+        }
+      }
+
+      input.close();
+    }
+
+    TimeBlock checkEvent;
+    Date = busyTimes.get(0).getStartDate();
+    TimeZone = busyTimes.get(0).getTimezone();
+
+    for (int i = 0; i < busyTimes.size(); i++) {
+      checkEvent = busyTimes.get(i);
+
+      if (!checkEvent.getStartDate().equals(Date) || !checkEvent.getEndDate().equals(Date)
+          || !checkEvent.getTimezone().equals(TimeZone)) {
+        throw new IOException("The event is not on the same day or time zones did not match.");
+      }
+
+      Collections.sort(busyTimes);
+    }
+  }
+
+
+  public void findPossibleFreeTimes() throws IOException {
+
+    for (int i = 0; i < possibleFreeTimeFiles.size(); i++) {
+      File file = new File(possibleFreeTimeFiles.get(i));
+      Scanner input = new Scanner(file);
+      possibleFreeTime.add(new TimeBlock());
+
+      while (input.hasNext()) {
+        String nextLine = input.nextLine();
+        String delimiter = "[:]+";
+        String[] tokens = nextLine.split(delimiter);
+
+        if (tokens[0].equals("DTSTART")) {
+          possibleFreeTime.get(i).setdtStart(tokens[1]);
+        }
+
+        if (tokens[0].equals("DTEND")) {
+          possibleFreeTime.get(i).setdtEnd(tokens[1]);
+        }
+
+        if (tokens[0].equals("TZID")) {
+          possibleFreeTime.get(i).setTimezone(tokens[1]);
+        }
+        if (tokens[0].equals("PRIORITY")) {
+          possibleFreeTime.get(i).setPriority(tokens[1]);
+
+        }
+      }
+
+      input.close();
+    }
+
+    TimeBlock checkEvent;
+    Date = possibleFreeTime.get(0).getStartDate();
+    TimeZone = possibleFreeTime.get(0).getTimezone();
+
+    for (int i = 0; i < possibleFreeTime.size(); i++) {
+      checkEvent = possibleFreeTime.get(i);
+
+      if (!checkEvent.getStartDate().equals(Date) || !checkEvent.getEndDate().equals(Date)
+          || !checkEvent.getTimezone().equals(TimeZone)) {
+        throw new IOException("The event is not on the same day or time zones did not match.");
+      }
+
+      Collections.sort(possibleFreeTime);
+    }
+  }
+
+
+  /**
+   * Set possible free time events
+   */
+  public void getPossibleFreeTimeEvents() {
+    for (int i = 0; i < freeTimes.size(); i++) {
+      ICalendarEvent possibleFreeTimeEvent = new ICalendarEvent();
+
+      possibleFreeTimeEvent.setSummary("Possible Free Time" + i);
+      possibleFreeTimeEvent.setLocation("None");
+      possibleFreeTimeEvent.setDTStart(Date, freeTimes.get(i).getStartTime());
+      possibleFreeTimeEvent.setDTEnd(Date, freeTimes.get(i).getEndTime());
+      possibleFreeTimeEvent.setTimeZone(TimeZone);
+      possibleFreeTimeEvent.setPriority("high");
+      possibleFreeTimeEvent.setClassification("public");
+
+      possibleFreeTimeEvents.add(possibleFreeTimeEvent);
+    }
+  }
+}
