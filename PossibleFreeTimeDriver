@@ -5,7 +5,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-
+/**
+ * 
+ * @author Cynthia
+ * Driver for PossibleFreeTime
+ */
 public class PossibleFreeTimeDriver {
   public static void main(String[] args) throws Exception {
     PossibleFreeTimeEvents possibleFreeTime = new PossibleFreeTimeEvents();
@@ -38,7 +42,7 @@ public class PossibleFreeTimeDriver {
       icsFile.write("\nPRIORITY:" + timeBlock.getPriority());
 
       if (timeBlock.getPriority() == 9) {
-        icsFile.write("\nSUMMARY: Free Time!");
+        icsFile.write("\nSUMMARY: Possible Free Time!");
       }
       else {
         icsFile.write("\nSUMMARY: Busy Time :'(");
@@ -53,6 +57,8 @@ public class PossibleFreeTimeDriver {
 
     icsFile.write("\nEND:VCALENDAR");
     icsFile.close();
+    
+    System.out.println(".ics file has been created");
   }
 
 
@@ -61,7 +67,7 @@ public class PossibleFreeTimeDriver {
     ArrayList<String> fileNames = new ArrayList<>();
     Scanner input = new Scanner(System.in);
 
-    System.out.print("Enter .txt file name including the extension (enter d when done): ");
+    System.out.print("Enter .txt file path including the extension (enter d when done): ");
     String file = input.nextLine().trim();
 
     while ((!file.equals("d")) && (!file.equals("D"))) {
@@ -89,7 +95,7 @@ public class PossibleFreeTimeDriver {
         e.printStackTrace();
       }
 
-      System.out.print("Enter .txt file name including the extension (enter d when done): ");
+      System.out.print("Enter .txt file path including the extension (enter d when done): ");
       file = input.nextLine().trim();
     }
     return fileNames;
