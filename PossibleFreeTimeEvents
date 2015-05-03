@@ -10,7 +10,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Scanner;
-
+/**
+ * 
+ * @author Cynthia
+ * PossibleFreeTime Events
+ */
 public class PossibleFreeTimeEvents {
 
   private class TimeBlockComparator implements Comparator<TimeBlock> {
