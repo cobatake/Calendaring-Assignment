@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
@@ -12,8 +13,6 @@ import java.util.Scanner;
  * @author chanelsantiago
  */
 public class UserEvent {
-    static String[] timezone1 = {"Africa", "America", "Antarctic", "Atlantic", "Europe", "Indian", "Pacific"};
-    static String[] africa = {"Abidjan", "Accra", "Addis_Ababa", "Algiers", "Asmara"};
     public static void main (String args[]) throws IOException {
         Scanner scan = new Scanner(System.in);
         ICalendarEvent event = new ICalendarEvent();
@@ -67,6 +66,6 @@ public class UserEvent {
 		icsFile.write("\nEND:VEVENT");
 		icsFile.write("\nEND:VCALENDAR");
 		icsFile.close();
-		System.out.print("\nThe .ics file for your event has been created.");
+		System.out.println("\nThe .ics file for your event has been created.");
 	}
 }
