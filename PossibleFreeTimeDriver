@@ -42,7 +42,7 @@ public class PossibleFreeTimeDriver {
       icsFile.write("\nPRIORITY:" + timeBlock.getPriority());
 
       if (timeBlock.getPriority() == 9) {
-        icsFile.write("\nSUMMARY: Possible Free Time!");
+        icsFile.write("\nSUMMARY: Possible Meeting Time!");
       }
       else {
         icsFile.write("\nSUMMARY: Busy Time :'(");
