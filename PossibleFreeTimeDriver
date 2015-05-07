@@ -1,0 +1,103 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
+/**
+ * 
+ * @author Cynthia
+ * Driver for PossibleFreeTime
+ */
+public class PossibleFreeTimeDriver {
+  public static void main(String[] args) throws Exception {
+    PossibleFreeTimeEvents possibleFreeTime = new PossibleFreeTimeEvents();
+
+    ArrayList<String> busyTimeIcsFiles = getIcsFileInputs();
+
+    for (String icsFilePath : busyTimeIcsFiles) {
+      possibleFreeTime.addBusyTime(icsFilePath);
+    }
+
+    ArrayList<TimeBlock> fullCalendar = possibleFreeTime.getFullCalendar();
+    exportToFile(fullCalendar);
+  }
+
+
+  /**
+   * Save calendar event to a .ics file
+   * 
+   * @param event - calendar event object
+   */
+  public static void exportToFile(ArrayList<TimeBlock> fullCalendar) throws IOException {
+    FileWriter icsFile = new FileWriter("C:/Users/Cynthia/Desktop/Finished314ICS/FullSchedule.ics");
+    icsFile.write("BEGIN:VCALENDAR");
+    icsFile.write("\nVERSION:2.0");
+
+    for (TimeBlock timeBlock : fullCalendar) {
+      icsFile.write("\nBEGIN:VEVENT");
+      icsFile.write("\nCLASS:PUBLIC");
+      icsFile.write("\nLOCATION: In a Castle");
+      icsFile.write("\nPRIORITY:" + timeBlock.getPriority());
+
+      if (timeBlock.getPriority() == 9) {
+        icsFile.write("\nSUMMARY: Possible Free Time!");
+      }
+      else {
+        icsFile.write("\nSUMMARY: Busy Time :'(");
+      }
+
+      icsFile.write("\nDTSTART;TZID=" + timeBlock.getTimezone() + ":" + timeBlock.getStartDate() + "T"
+          + timeBlock.getStartTime());
+      icsFile.write("\nDTEND;TZID=" + timeBlock.getTimezone() + ":" + timeBlock.getEndDate() + "T"
+          + timeBlock.getEndTime());
+      icsFile.write("\nEND:VEVENT");
+    }
+
+    icsFile.write("\nEND:VCALENDAR");
+    icsFile.close();
+    
+    System.out.println(".ics file has been created");
+  }
+
+
+  /** Asks user for an input txt file with ics files in it, and returns a List of ics filenames. */
+  public static ArrayList<String> getIcsFileInputs() {
+    ArrayList<String> fileNames = new ArrayList<>();
+    Scanner input = new Scanner(System.in);
+
+    System.out.print("Enter .txt file path including the extension (enter d when done): ");
+    String file = input.nextLine().trim();
+
+    while ((!file.equals("d")) && (!file.equals("D"))) {
+      // List of files
+      File eventFile = new File(file);
+      String extension = file.substring(file.lastIndexOf("."), file.length());
+
+      if (!extension.equals(".txt")) {
+        System.out.print("Not a valid file\n");
+      }
+      else if (!eventFile.exists() || eventFile.isDirectory()) {
+        System.out.print("File does not exist\n");
+      }
+      try (BufferedReader br = new BufferedReader(new FileReader(eventFile))) {
+        String line;
+
+        while ((line = br.readLine()) != null) {
+          // Adds the line in the text file (of .ics files) to the fileNames.
+          fileNames.add(line);
+          System.out.print(line + " was added successfully\n");
+        }
+      }
+
+      catch (IOException e) {
+        e.printStackTrace();
+      }
+
+      System.out.print("Enter .txt file path including the extension (enter d when done): ");
+      file = input.nextLine().trim();
+    }
+    return fileNames;
+  }
+}
